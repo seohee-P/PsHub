@@ -1,2 +1,2 @@
-A,B,C = map(int,input().split())
-print(pow(A,B,C))
+a,b,c = map(int,input().split())
+print(pow(a,b,c))
