@@ -1,22 +1,16 @@
 # 1
-import sys
-
-
 def main():
-    for line in sys.stdin:
-        n = int(line)
-        if n == 1:
-            print(1)
-            continue
-        digit = 1
-        now = 11
-        while True:
-            if now % n == 0:
-                print(len(str(now)))
-                break
-            digit += 1
-            now += pow(10, digit)
-
+    while True:
+        try:
+            n = int(input())
+        except:
+            break
+        now = 1
+        answer = 1
+        while now % n != 0:
+            answer += 1
+            now = now * 10 + 1
+        print(answer)
 
 if __name__ == '__main__':
     main()
