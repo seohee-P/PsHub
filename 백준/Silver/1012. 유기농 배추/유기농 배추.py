@@ -8,7 +8,6 @@ def main():
     for _ in range(T):
         M, N, K = map(int, input().split())
         field = [[0 for _ in range(M)] for _ in range(N)]
-        visited = [[0 for _ in range(M)] for _ in range(N)]
         for _ in range(K):
             x, y = map(int, input().split())
             field[y][x] = 1
@@ -21,20 +20,17 @@ def main():
             for j in range(M):
                 if field[i][j] == 0:
                     continue
-                if visited[i][j] == 1:
-                    continue
                 worm += 1
-                visited[i][j] = 1
+                field[i][j] = 0
                 queue.append((i, j))
                 while queue:
                     y, x = queue.popleft()
                     for dy, dx in dirs:
                         ny, nx = y + dy, x + dx
-                        if (0 <= nx < M and 0 <= ny < N) and visited[ny][nx] == 0:
-                            if field[ny][nx] == 1:
-                                visited[ny][nx] = 1
-                                queue.append((ny, nx))
-                                
+                        if (0 <= nx < M and 0 <= ny < N) and field[ny][nx] == 1:
+                            field[ny][nx] = 0
+                            queue.append((ny, nx))
+
         print(worm)
 
 
