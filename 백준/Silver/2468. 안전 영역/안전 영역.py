@@ -1,42 +1,45 @@
 # 안전 영역
 from collections import deque
-
+import sys
+input = sys.stdin.readline
 
 def main():
-    N = int(input())
-    area = []
-    max_rain = 0
-    for i in range(N):
-        temp = list(map(int, input().split()))
-        max_rain = max(max_rain, max(temp))
-        area.append(temp)
-
-    def check_safe_area(rain):
-        visited = [[0 for _ in range(N)] for _ in range(N)]
-        queue = deque()
-        count_area = 0
-        for i in range(N):
-            for j in range(N):
-                if visited[i][j] == 1 or area[i][j] <= rain:
-                    continue
-                count_area += 1
-                queue.append([i, j])
-                visited[i][j] = 1
-                while queue:
-                    x, y = queue.popleft()
-                    for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                        nx, ny = x + dx, y + dy
-                        if 0 <= nx < N and 0 <= ny < N:
-                            if visited[nx][ny] == 0 and area[nx][ny] > rain:
-                                visited[nx][ny] = 1
-                                queue.append([nx, ny])
-        return count_area
+    global n, area
+    n = int(input())
+    area = [list(map(int, input().split())) for _ in range(n)]
+    max_height = 0
+    for a in area:
+        max_height = max(max_height, max(a))
 
     answer = 0
-    for i in range(max_rain):
-        answer = max(answer, check_safe_area(i))
+    for i in range(max_height):
+        answer = max(bfs(i), answer)
+
     print(answer)
 
+def bfs(height):
+    visited = [[False] * n for _ in range(n)]
+    count = 0
+    for i in range(n):
+        for j in range(n):
+            if area[i][j] <= height or visited[i][j]:
+                continue
+            queue = deque([(i, j)])
+            visited[i][j] = True
+            count += 1
+            while queue:
+                y, x = queue.popleft()
+                for dy, dx in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                    ny, nx = y + dy, x + dx
+                    if ny < 0 or ny >= n or nx < 0 or nx >= n:
+                        continue
+                    if visited[ny][nx]:
+                        continue
+                    if area[ny][nx] > height:
+                        queue.append((ny, nx))
+                        visited[ny][nx] = True
+
+    return count
 
 if __name__ == '__main__':
     main()
