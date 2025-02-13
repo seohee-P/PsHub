@@ -3,40 +3,38 @@ import sys
 input = sys.stdin.readline
 
 def main():
-    s = set()
+    s = [0 for _ in range(21)]
     for _ in range(int(input())):
         command = input().split()
 
         if command[0] == 'add':
-            s.add(int(command[1]))
+            s[int(command[1])] = 1
             continue
 
         if command[0] == 'remove':
-            if int(command[1]) in s:
-                s.remove(int(command[1]))
+            if s[int(command[1])] == 1:
+                s[int(command[1])] = 0
             continue
 
         if command[0] == 'check':
-            if int(command[1]) in s:
-                print(1)
-            else:
-                print(0)
+            print(1) if s[int(command[1])] == 1 else print(0)
             continue
 
         if command[0] == 'toggle':
-            if int(command[1]) in s:
-                s.remove(int(command[1]))
+            if s[int(command[1])] == 1:
+                s[int(command[1])] = 0
             else:
-                s.add(int(command[1]))
+                s[int(command[1])] = 1
             continue
 
         if command[0] == 'all':
-            s = set([i for i in range(1, 21)])
+            s = [1 for _ in range(21)]
             continue
 
         if command[0] == 'empty':
-            s.clear()
+            s = [0 for _ in range(21)]
             continue
+
 
 if __name__ == '__main__':
     main()
